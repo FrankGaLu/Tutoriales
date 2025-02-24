@@ -41,7 +41,7 @@ echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-a
 Now you can install ROS 2 with the following command:
 
 ```bash
-sudo apt update && sudo apt install ros-fhumble-desktop-full -y
+sudo apt update && sudo apt install ros-humble-desktop-full -y
 sudo apt install python3-colcon-common-extensions
 ```
 
