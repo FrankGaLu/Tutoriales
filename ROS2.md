@@ -1,4 +1,4 @@
-# Basic ROS2 Humble Tutorial
+# Basic ROS2 jazzy Tutorial
 
 ***Author: Dr. Francesco Garcia-Luna***
 
@@ -13,7 +13,7 @@
     - [ROS Domain ID](#14-ros-domain-id)
     - [ROS Localhost only](#15-ros-localhost-only)
     - [Colcon](#16-colcon)
-    - [(Optional) Uninstall ROS2](#14-optional-uninstall-ros2)
+    - [(Optional) Uninstall ROS2](#optional-uninstall-ros2)
 2. [Create a ROS2 Workspace](#2-create-a-ros2-workspace)
 3. [Create a ROS2 Package](#3-create-a-ros2-package)
     - [Build the ROS2 Package](#31-build-the-ros2-package)
@@ -24,14 +24,19 @@
     - [Add an entrypoint](#52-add-an-entrypoint)
 6. [Run the ROS2 Nodes](#6-run-the-ros2-nodes)
 7. [Create a Basic URDF Model](#7-create-a-basic-urdf-model)
-8. [Visualize the URDF Model in RVIZ2](#8-visualize-the-urdf-model-in-rviz2)
-9. [Create a Basic Launch File to visualize the URDF Model](#9-create-a-basic-launch-file-to-visualize-the-urdf-model)
+    - [Visualize the URDF Model in RVIZ2](#71-visualize-the-urdf-model-in-rviz2)
+8. [Create a Basic Launch File to visualize the URDF Model](#8-create-a-basic-launch-file-to-visualize-the-urdf-model)
+9. [Create a Multishape Model](#9-create-a-multishape-model)
+    - [Create a launch file to visualize the URDF model in RVIZ2](#91-create-a-launch-file-to-visualize-the-urdf-model-in-rviz2)
+    - [Origins in URDF](#92-origins-in-urdf)
+    - [Materials in URDF](#93-materials-in-urdf)
+    - [Example of a Multishape Model](#94-example-of-a-multishape-model)
 
 ---
 
 ## 1. Installation
 
-For detailed installation instructions, please refer to the [ROS2 Humble Installation Guide](https://docs.ros.org/en/humble/Installation.html).
+For detailed installation instructions, please refer to the [ROS2 jazzy Installation Guide](https://docs.ros.org/en/jazzy/Installation.html).
 
 ### 1.1. Setup Sources
 
@@ -48,13 +53,13 @@ echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-a
 ```sh
 sudo apt update
 sudo apt upgrade -y
-sudo apt install ros-humble-desktop-full
+sudo apt install ros-jazzy-desktop-full
 ```
 
 ### 1.3. Environment Setup
 
 ```sh
-echo "source /opt/ros/humble/setup.bash" >> ~/.bashrc
+echo "source /opt/ros/jazzy/setup.bash" >> ~/.bashrc
 source ~/.bashrc
 ```
 
@@ -83,14 +88,14 @@ Colcon is a command-line tool to build ROS 2 packages. You can install it using 
 ```sh
 sudo apt install python3-colcon-common-extensions
 echo "source /usr/share/colcon_cd/function/colcon_cd.sh" >> ~/.bashrc
-echo "export _colcon_cd_root=/opt/ros/humble/" >> ~/.bashrc
+echo "export _colcon_cd_root=/opt/ros/jazzy/" >> ~/.bashrc
 source ~/.bashrc
 ```
 
 ### (Optional) Uninstall ROS2
 
 ```sh
-sudo apt remove ~nros-humble-* && sudo apt autoremove
+sudo apt remove ~nros-jazzy-* && sudo apt autoremove
 sudo rm /etc/apt/sources.list.d/ros2.list
 sudo apt update
 sudo apt autoremove
@@ -305,9 +310,9 @@ data_files = [
 
 ---
 
-## 8. Visualize the URDF Model in RVIZ2
+### 7.1. Visualize the URDF Model in RVIZ2
 
-In order to visualize an URDF Model in RVIZ2, first you need to open RVIZ2 and create a config file in the `rviz2` directory of the package. 
+In order to visualize an URDF Model in RVIZ2, first you need to open RVIZ2 and create a config file in the `rviz2` directory of the package.
 
 ```bash
 rviz2
@@ -341,7 +346,7 @@ ros2 run robot_state_publisher robot_state_publisher --ros-args -p robot_descrip
 
 ---
 
-## 9. Create a Basic Launch File to visualize the URDF Model
+## 8. Create a Basic Launch File to visualize the URDF Model
 
 To create a basic launch file to visualize the URDF Model in RVIZ2, you can use the following XML code:
 
@@ -406,3 +411,363 @@ colcon build --symlink-install
 source install/setup.bash
 ros2 launch <package_name> display.launch.py
 ```
+
+---
+
+## 9. Create a Multishape Model
+
+First we need to add a new package called `urdf_launch` from the repository [urdf_launch](https://github.com/ros/urdf_launch.git) to the workspace, and install `ros-jazzy-joint-state-publisher-gui:
+
+```bash
+cd ~/ros2_ws/src
+git clone --recursive https://github.com/ros/urdf_launch.git
+sudo apt install ros-jazzy-joint-state-publisher-gui
+```
+
+Then, compile and source the workspace
+
+```bash
+cd ~/ros2_ws
+colcon build --symlink-install
+source install/setup.bash
+```
+
+Now, we can create a new URDF model with multiple shapes:
+
+```xml
+<?xml version="1.0"?>
+<robot name="multishapes">
+    <!-- LINKS -->
+    <link name="base_link">
+        <visual>
+            <geometry>
+                <cylinder length="0.6" radius="0.2"/>
+            </geometry>
+        </visual>
+    </link>
+
+    <link name="right_leg">
+        <visual>
+            <geometry>
+                <box size="0.6 0.1 0.2"/>
+            </geometry>
+        </visual>
+    </link>
+
+    <!-- JOINTS -->
+    <joint name="base_to_right_leg" type="fixed">
+        <parent link="base_link"/>
+        <child link="right_leg"/>
+    </joint>
+
+</robot>
+```
+
+where the `base_link` is a cylinder and the `right_leg` is a box. Save the file as `multishapes.urdf` in the `urdf` directory of the package.
+
+### 9.1. Create a launch file to visualize the URDF model in RVIZ2
+
+Now, we can create a launch file to visualize the URDF model in RVIZ2:
+
+```python
+from launch import LaunchDescription
+from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
+from launch_ros.actions import Node
+from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
+from launch_ros.substitutions import FindPackageShare
+
+def generate_launch_description() -> LaunchDescription:
+    ld = LaunchDescription()
+
+    # Obtener la ruta del paquete
+    pkg_share = FindPackageShare(package='pruebas')
+    
+    # Construir rutas de archivos
+    default_model_path = PathJoinSubstitution(['urdf', 'basic.urdf'])
+    default_rviz_path = PathJoinSubstitution([pkg_share, 'rviz2', 'display.rviz'])
+
+    # Argumento para habilitar/deshabilitar GUI
+    gui_arg = DeclareLaunchArgument(
+        name='gui',
+        default_value='true',
+        choices=['true', 'false'],
+        description='Flag to enable/disable the GUI'
+    )
+    ld.add_action(gui_arg)
+
+    # Argumento para el archivo de configuración de RViz
+    rviz_arg = DeclareLaunchArgument(
+        name='rvizconfig',
+        default_value=default_rviz_path,
+        description='Path to the RViz config file relative to the package'
+    )
+    ld.add_action(rviz_arg)
+
+    # Argumento para el modelo URDF
+    model_arg: DeclareLaunchArgument = DeclareLaunchArgument(
+        name='model',
+        default_value=default_model_path,
+        description='Path to robot urdf file relative to urdf_tutorial package')
+    ld.add_action(model_arg)
+
+    # Incluir el lanzamiento de urdf_launch
+    ild: IncludeLaunchDescription = IncludeLaunchDescription(
+        PathJoinSubstitution([FindPackageShare('urdf_launch'), 'launch', 'display.launch.py']),
+        launch_arguments={
+            'urdf_package': 'pruebas',
+            'urdf_package_path': LaunchConfiguration('model'),
+            'rviz_config': LaunchConfiguration('rvizconfig'),
+            'jsp_gui': LaunchConfiguration('gui')}.items())
+    ld.add_action(ild)
+
+    return ld
+```
+
+Save the file as `display_custom.launch.py` in the `launch` directory of the package.
+
+Finally, to run the launch file, compile and source the workspace, and run the launch file:
+
+```bash
+cd ~/ros2_ws
+colcon build --symlink-install
+source install/setup.bash
+ros2 launch <package_name> display_custom.launch.py model:=urdf/<model_name>.urdf
+```
+
+### 9.2. Origins in URDF
+
+The origins in URDF are defined by the `origin` tag, which specifies the position and orientation of the link or joint with respect to its parent. The `origin` tag has the following attributes:
+
+- `xyz`: The position of the link or joint in the parent frame.
+- `rpy`: The orientation of the link or joint in the parent frame.
+
+For example, to define the origin of the `right_leg` link with respect to the `base_link` link, you can use the following code:
+
+```xml
+<link name="right_leg">
+    <visual>
+        <origin rpy="0 1.57 0" xyz="0 0 -0.3"/>
+        <geometry>
+            <box size="0.6 0.1 0.2"/>
+        </geometry>
+    </visual>
+</link>
+
+<joint name="base_to_right_leg" type="fixed">
+    <origin xyz="0 -0.22 0.25"/>
+    <parent link="base_link"/>
+    <child link="right_leg"/>
+</joint>
+```
+
+In this example, the `right_leg` link is rotated 90 degrees around the y-axis and translated 0.3 units in the z-axis with respect to the `base_link` link. The `base_to_right_leg` joint is translated 0.22 units in the y-axis and 0.25 units in the z-axis with respect to the `base_link` link.
+
+### 9.3. Materials in URDF
+
+Materials in URDF are defined by the `material` tag, which specifies the color and texture of the link or joint. The `material` tag has the following attributes:
+
+- `name`: The name of the material.
+- `rgba`: The color of the material in RGBA format.
+
+For example, to define a red color material for the `right_leg` link, you can use the following code:
+
+```xml
+<material>
+    <name>white</name>
+    <color rgba="1 1 1 1"/>
+</material>
+```
+
+Now, we can use the material in a `visualize` tag:
+
+```xml
+<link name="left_leg">
+    <visual>
+        <origin rpy="0 1.57 0" xyz="0 0 -0.3"/>
+        <geometry>
+            <box size="0.6 0.1 0.2"/>
+        </geometry>
+        <material name="white"/>
+    </visual>
+</link>
+```
+
+### 9.4. Example of a Multishape Model
+
+```xml
+<?xml version="1.0"?>
+<robot name="visual">
+    <!-- MATERIALS-->
+    <material name="red">
+        <color rgba="1 0 0 1"/>
+    </material>
+
+    <material name="green">
+        <color rgba="0 1 0 1"/>
+    </material>
+
+    <material name="blue">
+        <color rgba="0 0 1 1"/>
+    </material>
+
+    <material name="cyan">
+        <color rgba="0 1 1 1"/>
+    </material>
+
+    <material name="magenta">
+        <color rgba="1 0 1 1"/>
+    </material>
+
+    <material name="yellow">
+        <color rgba="1 1 0 1"/>
+    </material>
+
+    <material name="white">
+        <color rgba="1 1 1 1"/>
+    </material>
+
+    <material name="black">
+        <color rgba="0 0 0 1"/>
+    </material>
+
+    <!-- LINKS -->
+    <link name="base_link">
+        <visual>
+            <geometry>
+                <cylinder length="0.6" radius="0.2"/>
+            </geometry>
+            <material name="blue"/>
+        </visual>
+    </link>
+
+    <link name="right_leg">
+        <visual>
+            <origin rpy="0 1.57 0" xyz="0 0 -0.3"/>
+            <geometry>
+                <box size="0.6 0.1 0.2"/>
+            </geometry>
+            <material name="white"/>
+        </visual>
+    </link>
+
+    <link name="left_leg">
+        <visual>
+            <origin rpy="0 1.57 0" xyz="0 0 -0.3"/>
+            <geometry>
+                <box size="0.6 0.1 0.2"/>
+            </geometry>
+            <material name="white"/>
+        </visual>
+    </link>
+
+    <link name="right_base">
+        <visual>
+            <geometry>
+                <box size="0.4 0.1 0.1"/>
+            </geometry>
+            <material name="white"/>
+        </visual>
+    </link>
+
+    <link name="left_base">
+        <visual>
+            <geometry>
+                <box size="0.4 0.1 0.1"/>
+            </geometry>
+            <material name="white"/>
+        </visual>
+    </link>
+
+    <link name="front_right_wheel">
+        <visual>
+            <origin rpy="1.57 0 0" xyz="0 0 0"/>
+            <geometry>
+                <cylinder length="0.1" radius="0.035"/>
+            </geometry>
+            <material name="black"/>
+        </visual>
+    </link>
+
+    <link name="back_right_wheel">
+        <visual>
+            <origin rpy="1.57 0 0" xyz="0 0 0"/>
+            <geometry>
+                <cylinder length="0.1" radius="0.035"/>
+            </geometry>
+            <material name="black"/>
+        </visual>
+    </link>
+
+    <link name="front_left_wheel">
+        <visual>
+            <origin rpy="1.57 0 0" xyz="0 0 0"/>
+            <geometry>
+                <cylinder length="0.1" radius="0.035"/>
+            </geometry>
+            <material name="black"/>
+        </visual>
+    </link>
+
+    <link name="back_left_wheel">
+        <visual>
+            <origin rpy="1.57 0 0" xyz="0 0 0"/>
+            <geometry>
+                <cylinder length="0.1" radius="0.035"/>
+            </geometry>
+            <material name="black"/>
+        </visual>
+    </link>
+
+    <!-- JOINTS -->
+    <joint name="base_to_right_leg" type="fixed">
+        <origin xyz="0 -0.22 0.25"/>
+        <parent link="base_link"/>
+        <child link="right_leg"/>
+    </joint>
+
+    <joint name="base_to_left_leg" type="fixed">
+        <origin xyz="0 0.22 0.25"/>
+        <parent link="base_link"/>
+        <child link="left_leg"/>
+    </joint>
+
+    <joint name="right_base_joint" type="fixed">
+        <parent link="right_leg"/>
+        <child link="right_base"/>
+        <origin xyz="0 0 -0.6"/>
+    </joint>
+
+    <joint name="left_base_joint" type="fixed">
+        <parent link="left_leg"/>
+        <child link="left_base"/>
+        <origin xyz="0 0 -0.6"/>
+    </joint>
+
+    <joint name="front_right_wheel_joint" type="fixed">
+        <parent link="right_base"/>
+        <child link="front_right_wheel"/>
+        <origin rpy="0 0 0" xyz="0.133 0 -0.085"/>
+    </joint>
+
+    <joint name="back_right_wheel_joint" type="fixed">
+        <parent link="right_base"/>
+        <child link="back_right_wheel"/>
+        <origin rpy="0 0 0" xyz="-0.133 0 -0.085"/>
+    </joint>
+
+    <joint name="front_left_wheel_joint" type="fixed">
+        <parent link="left_base"/>
+        <child link="front_left_wheel"/>
+        <origin rpy="0 0 0" xyz="0.133 0 -0.085"/>
+    </joint>
+
+    <joint name="back_left_wheel_joint" type="fixed">
+        <parent link="left_base"/>
+        <child link="back_left_wheel"/>
+        <origin rpy="0 0 0" xyz="-0.133 0 -0.085"/>
+    </joint>
+
+</robot>
+```
+
+![rviz1_complete_robot](ros2_tutorial_images/rviz2_complete.png)
