@@ -106,6 +106,7 @@ sudo apt upgrade
 
 ## 2. Create a ROS2 Workspace
 
+
 To create a new ROS 2 workspace, you can use the following commands:
 
 ```sh
@@ -363,7 +364,7 @@ def generate_launch_description() -> LaunchDescription:
     urdf_filename: str = os.path.join(pruebas_path, 'urdf', '<model_name>.urdf')
     
     if not os.path.exists(urdf_filename):
-            raise FileNotFoundError(f'El archivo URDF no se encontró en: {urdf_filename}')
+            raise FileNotFoundError(f'URDF file not found at: {urdf_filename}')
 
     with open(urdf_filename, 'r') as infp:
         robot_description: str = infp.read()
@@ -416,7 +417,7 @@ ros2 launch <package_name> display.launch.py
 
 ## 9. Create a Multishape Model
 
-First we need to add a new package called `urdf_launch` from the repository [urdf_launch](https://github.com/ros/urdf_launch.git) to the workspace, and install `ros-jazzy-joint-state-publisher-gui:
+First we need to add a new package called `urdf_launch` from the repository [urdf_launch](https://github.com/ros/urdf_launch.git) to the workspace, and install `ros-jazzy-joint-state-publisher-gui`:
 
 ```bash
 cd ~/ros2_ws/src
@@ -479,14 +480,14 @@ from launch_ros.substitutions import FindPackageShare
 def generate_launch_description() -> LaunchDescription:
     ld = LaunchDescription()
 
-    # Obtener la ruta del paquete
+    # Get the package path
     pkg_share = FindPackageShare(package='pruebas')
     
-    # Construir rutas de archivos
+    # Build file paths
     default_model_path = PathJoinSubstitution(['urdf', 'basic.urdf'])
     default_rviz_path = PathJoinSubstitution([pkg_share, 'rviz2', 'display.rviz'])
 
-    # Argumento para habilitar/deshabilitar GUI
+    # Argument to enable/disable GUI
     gui_arg = DeclareLaunchArgument(
         name='gui',
         default_value='true',
@@ -495,7 +496,7 @@ def generate_launch_description() -> LaunchDescription:
     )
     ld.add_action(gui_arg)
 
-    # Argumento para el archivo de configuración de RViz
+    # Argument for the RViz config file
     rviz_arg = DeclareLaunchArgument(
         name='rvizconfig',
         default_value=default_rviz_path,
@@ -503,14 +504,14 @@ def generate_launch_description() -> LaunchDescription:
     )
     ld.add_action(rviz_arg)
 
-    # Argumento para el modelo URDF
+    # Argument for the URDF model
     model_arg: DeclareLaunchArgument = DeclareLaunchArgument(
         name='model',
         default_value=default_model_path,
         description='Path to robot urdf file relative to urdf_tutorial package')
     ld.add_action(model_arg)
 
-    # Incluir el lanzamiento de urdf_launch
+    # Include the urdf_launch launch
     ild: IncludeLaunchDescription = IncludeLaunchDescription(
         PathJoinSubstitution([FindPackageShare('urdf_launch'), 'launch', 'display.launch.py']),
         launch_arguments={
@@ -718,6 +719,15 @@ Now, we can use the material in a `visualize` tag:
         </visual>
     </link>
 
+    <link name="head">
+        <visual>
+            <geometry>
+                <sphere radius="0.2"/>
+            </geometry>
+            <material name="white"/>
+        </visual>
+    </link>
+
     <!-- JOINTS -->
     <joint name="base_to_right_leg" type="fixed">
         <origin xyz="0 -0.22 0.25"/>
@@ -767,7 +777,26 @@ Now, we can use the material in a `visualize` tag:
         <origin rpy="0 0 0" xyz="-0.133 0 -0.085"/>
     </joint>
 
+    <joint name="head_swivel" type="continuous">
+        <parent link="base_link"/>
+        <child link="head"/>
+        <axis xyz="0 0 1"/>
+        <origin xyz="0 0 0.3"/>
+    </joint>
+
 </robot>
 ```
 
 ![rviz1_complete_robot](ros2_tutorial_images/rviz2_complete.png)
+
+---
+
+## 10. Move the Robot Model
+
+To visualize and control this model run the following command:
+
+```bash
+ros2 launch <package_name> display.launch.py
+```
+
+As you move the sliders around in the `Joint State Publisher GUI`, you will see the robot model moving in RVIZ2. This is done by parsing the URDF and finding all the non-fixed joints and their limits, and then creating a slider for each joint. The `Joint State Publisher GUI` will publish the joint states to the `/joint_states` topic, which is subscribed by the `Robot State Publisher` node to update the robot model in RVIZ2.
