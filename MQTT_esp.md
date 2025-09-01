@@ -17,6 +17,12 @@
 
 ---
 
+## Introducción
+
+Este tutorial proporciona una guía completa para instalar y configurar el broker MQTT Mosquitto en Ubuntu 24.04. Cubre la configuración básica, configuración y ejemplos de uso para suscribirse y publicar mensajes por terminal y Python.
+
+---
+
 ## 1. Instalación
 
 ### Instalación en Ubuntu 24.04
@@ -92,6 +98,38 @@ El archivo de configuración por defecto está bien documentado y contiene mucho
     password_file /etc/mosquitto/passwd
     ```
     Si deseas requerir autenticación, puedes crear un archivo de contraseñas y especificarlo aquí.
+
+---
+
+## Teoría del Protocolo MQTT
+
+MQTT (Message Queuing Telemetry Transport) es un protocolo ligero de publicación-suscripción diseñado para IoT y comunicaciones M2M. Usa un broker central para gestionar mensajes entre publicadores y suscriptores. Características clave incluyen niveles de Calidad de Servicio (QoS) (0: como máximo una vez, 1: al menos una vez, 2: exactamente una vez), mensajes retenidos, y Última Voluntad y Testamento (LWT) para manejar desconexiones.
+
+## Ejemplos Avanzados
+
+### Publicar con QoS
+
+```bash
+mosquitto_pub -h localhost -t "topico" -m "mensaje" -q 1
+```
+
+QoS 1 asegura que el mensaje se entregue al menos una vez.
+
+### Mensajes Retenidos
+
+```bash
+mosquitto_pub -h localhost -t "topico" -m "mensaje retenido" -r
+```
+
+Los mensajes retenidos se almacenan por el broker y se envían a nuevos suscriptores inmediatamente al suscribirse.
+
+### Última Voluntad y Testamento
+
+```bash
+mosquitto_pub -h localhost -t "topico" -m "cliente desconectado" --will-topic "estado" --will-payload "offline"
+```
+
+Esto establece un mensaje a publicar si el cliente se desconecta inesperadamente.
 
 ---
 

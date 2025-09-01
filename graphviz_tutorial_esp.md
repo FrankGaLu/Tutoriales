@@ -182,3 +182,51 @@ digraph G {
 
 - `graph` es el estilo del grafo.
 - `subgraph` es el estilo de los subgrafos.
+
+---
+
+## Conceptos Básicos de Teoría de Grafos
+
+Los grafos son estructuras matemáticas que consisten en nodos (vértices) y aristas. Los grafos dirigidos tienen aristas con dirección (flechas), mientras que los no dirigidos no. Graphviz usa el lenguaje DOT para describir grafos, que pueden representar relaciones, jerarquías, flujos de datos o redes. Conceptos clave incluyen conectividad, ciclos y algoritmos de recorrido de grafos.
+
+## Ejemplos Avanzados
+
+### Grafo con Clusters y Colores
+
+```dot
+digraph G {
+    subgraph cluster_A {
+        label="Cluster A";
+        A1 -> A2;
+        style=filled;
+        color=lightblue;
+    }
+    subgraph cluster_B {
+        label="Cluster B";
+        B1 -> B2;
+        style=filled;
+        color=lightgreen;
+    }
+    A1 -> B1 [label="Conexión"];
+}
+```
+
+Este ejemplo muestra cómo agrupar nodos en clusters visualmente distintos.
+
+### Grafo con Etiquetas HTML
+
+```dot
+digraph G {
+    A [label=< <B>Nodo A</B><BR/>Descripción >];
+    B [label=< <I>Nodo B</I><BR/>Otra descripción >];
+    A -> B;
+}
+```
+
+Las etiquetas HTML permiten formato rico en las etiquetas de nodos.
+
+---
+
+## Conclusión
+
+Este tutorial ha introducido los conceptos básicos de Graphviz para crear grafos dirigidos y no dirigidos. Cubre la instalación, uso y varios ejemplos con atributos para nodos, aristas, grafos y subgrafos. Para características más avanzadas, consulta la documentación oficial de Graphviz.

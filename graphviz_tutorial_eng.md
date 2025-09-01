@@ -182,3 +182,51 @@ digraph G {
 
 - `graph` is the style of the graph.
 - `subgraph` is the style of the subgraphs.
+
+---
+
+## Graph Theory Basics
+
+Graphs are mathematical structures consisting of nodes (vertices) and edges. Directed graphs have edges with direction (arrows), while undirected graphs do not. Graphviz uses the DOT language to describe graphs, which can represent relationships, hierarchies, data flows, or networks. Key concepts include connectivity, cycles, and graph traversal algorithms.
+
+## Advanced Examples
+
+### Graph with Clusters and Colors
+
+```dot
+digraph G {
+    subgraph cluster_A {
+        label="Cluster A";
+        A1 -> A2;
+        style=filled;
+        color=lightblue;
+    }
+    subgraph cluster_B {
+        label="Cluster B";
+        B1 -> B2;
+        style=filled;
+        color=lightgreen;
+    }
+    A1 -> B1 [label="Connection"];
+}
+```
+
+This example shows how to group nodes into visually distinct clusters.
+
+### Graph with HTML Labels
+
+```dot
+digraph G {
+    A [label=< <B>Node A</B><BR/>Description >];
+    B [label=< <I>Node B</I><BR/>Another description >];
+    A -> B;
+}
+```
+
+HTML labels allow for rich formatting in node labels.
+
+---
+
+## Conclusion
+
+This tutorial has introduced the basics of Graphviz for creating directed and undirected graphs. It covers installation, usage, and various examples with attributes for nodes, edges, graphs, and subgraphs. For more advanced features, refer to the official Graphviz documentation.

@@ -146,3 +146,40 @@ El comando `kill` envía una señal a un proceso para terminarlo.
 ```sh
 kill id_proceso
 ```
+
+---
+
+## Ejemplos Avanzados
+
+### `grep`
+El comando `grep` busca patrones en archivos usando expresiones regulares.
+```sh
+grep "error" logfile.txt
+```
+Es útil para encontrar texto específico en archivos grandes o logs.
+
+### `find`
+El comando `find` busca archivos en una jerarquía de directorios basada en varios criterios.
+```sh
+find /home -name "*.pdf" -type f
+```
+Ayuda a localizar archivos por nombre, tipo, tamaño, etc.
+
+### `chmod`
+El comando `chmod` cambia los permisos de archivos.
+```sh
+chmod 755 script.sh
+```
+Los permisos se representan en notación octal para propietario, grupo y otros.
+
+---
+
+## Antecedentes Teóricos
+
+La terminal, o interfaz de línea de comandos (CLI), es una forma basada en texto de interactuar con el sistema operativo. Permite a los usuarios ejecutar comandos, ejecutar scripts y gestionar archivos de manera más eficiente que las interfaces gráficas para ciertas tareas. Los comandos son procesados por el shell (ej. Bash), que los interpreta y ejecuta. El shell proporciona características como tuberías (`|`), redirección (`>`, `>>`) y scripting para automatización.
+
+---
+
+## Conclusión
+
+Este tutorial ha cubierto los comandos básicos esenciales para usar la terminal de manera efectiva, incluyendo navegación, manipulación de archivos y monitoreo del sistema. Practica estos comandos para volverte proficient en el uso de la terminal.

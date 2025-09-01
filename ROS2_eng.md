@@ -296,7 +296,7 @@ To create a basic URDF model, you can use the following XML code:
 </robot>
 ```
 
-It is recomended to be saved in a directory called `urdf` inside the package directory.
+It is recommended to be saved in a directory called `urdf` inside the package directory.
 
 Also, some modifications need to be done in the `setup.py` file, by adding the following lines:
 
@@ -800,3 +800,77 @@ ros2 launch <package_name> display.launch.py
 ```
 
 As you move the sliders around in the `Joint State Publisher GUI`, you will see the robot model moving in RVIZ2. This is done by parsing the URDF and finding all the non-fixed joints and their limits, and then creating a slider for each joint. The `Joint State Publisher GUI` will publish the joint states to the `/joint_states` topic, which is subscribed by the `Robot State Publisher` node to update the robot model in RVIZ2.
+
+---
+
+## ROS2 Architecture
+
+ROS2 is a middleware framework for robotics, providing tools and libraries for building complex robot software. It uses DDS (Data Distribution Service) for communication, supports multiple programming languages (Python, C++), and emphasizes real-time performance, security, and cross-platform compatibility. Key components include nodes, topics, services, actions, and parameters.
+
+## Advanced Node Example
+
+### Service Server
+
+```python
+import rclpy
+from rclpy.node import Node
+from example_interfaces.srv import AddTwoInts
+
+class MinimalService(Node):
+    def __init__(self):
+        super().__init__('minimal_service')
+        self.srv = self.create_service(AddTwoInts, 'add_two_ints', self.add_two_ints_callback)
+
+    def add_two_ints_callback(self, request, response):
+        response.sum = request.a + request.b
+        self.get_logger().info(f'Incoming request: {request.a} + {request.b} = {response.sum}')
+        return response
+
+def main(args=None):
+    rclpy.init(args=args)
+    minimal_service = MinimalService()
+    rclpy.spin(minimal_service)
+    rclpy.shutdown()
+
+if __name__ == '__main__':
+    main()
+```
+
+This example shows a service that adds two integers, demonstrating synchronous communication.
+
+### Action Client
+
+```python
+import rclpy
+from rclpy.action import ActionClient
+from rclpy.node import Node
+from example_interfaces.action import Fibonacci
+
+class MinimalActionClient(Node):
+    def __init__(self):
+        super().__init__('minimal_action_client')
+        self._action_client = ActionClient(self, Fibonacci, 'fibonacci')
+
+    def send_goal(self, order):
+        goal_msg = Fibonacci.Goal()
+        goal_msg.order = order
+        self._action_client.wait_for_server()
+        self._send_goal_future = self._action_client.send_goal_async(goal_msg)
+
+def main(args=None):
+    rclpy.init(args=args)
+    action_client = MinimalActionClient()
+    action_client.send_goal(10)
+    rclpy.spin(action_client)
+
+if __name__ == '__main__':
+    main()
+```
+
+This demonstrates asynchronous actions for long-running tasks.
+
+---
+
+## 11. Conclusion
+
+This tutorial has covered the basics of ROS2 jazzy installation, workspace creation, package development, writing publisher and subscriber nodes, and creating URDF models for visualization in RVIZ2. For more advanced topics, refer to the official ROS2 documentation.

@@ -417,7 +417,7 @@ ros2 launch <package_name> display.launch.py
 
 ## 9. Crear un modelo multiforma
 
-Primero necesitamos agregar un nuevo paquete llamado `urdf_launch` del repositorio [urdf_launch](https://github.com/ros/urdf_launch.git) al espacio de trabajo, e instalar `ros-jazzy-joint-state-publisher-gui:
+Primero necesitamos agregar un nuevo paquete llamado `urdf_launch` del repositorio [urdf_launch](https://github.com/ros/urdf_launch.git) al espacio de trabajo, e instalar `ros-jazzy-joint-state-publisher-gui`:
 
 ```bash
 cd ~/ros2_ws/src
@@ -784,3 +784,77 @@ ros2 launch <package_name> display.launch.py
 ```
 
 A medida que muevas los sliders en la `Joint State Publisher GUI`, verás el modelo del robot moviéndose en RVIZ2. Esto se logra al analizar el URDF y encontrar todas las articulaciones no fijas y sus límites, creando así un slider para cada articulación. La `Joint State Publisher GUI` publicará los estados de las articulaciones en el tópico `/joint_states`, el cual es suscrito por el nodo `Robot State Publisher` para actualizar el modelo del robot en RVIZ2.
+
+---
+
+## Arquitectura de ROS2
+
+ROS2 es un marco de middleware para robótica, proporcionando herramientas y bibliotecas para construir software complejo de robots. Usa DDS (Data Distribution Service) para comunicación, soporta múltiples lenguajes de programación (Python, C++), y enfatiza el rendimiento en tiempo real, seguridad y compatibilidad multiplataforma. Componentes clave incluyen nodos, tópicos, servicios, acciones y parámetros.
+
+## Ejemplo Avanzado de Nodo
+
+### Servidor de Servicio
+
+```python
+import rclpy
+from rclpy.node import Node
+from example_interfaces.srv import AddTwoInts
+
+class MinimalService(Node):
+    def __init__(self):
+        super().__init__('minimal_service')
+        self.srv = self.create_service(AddTwoInts, 'add_two_ints', self.add_two_ints_callback)
+
+    def add_two_ints_callback(self, request, response):
+        response.sum = request.a + request.b
+        self.get_logger().info(f'Solicitud entrante: {request.a} + {request.b} = {response.sum}')
+        return response
+
+def main(args=None):
+    rclpy.init(args=args)
+    minimal_service = MinimalService()
+    rclpy.spin(minimal_service)
+    rclpy.shutdown()
+
+if __name__ == '__main__':
+    main()
+```
+
+Este ejemplo muestra un servicio que suma dos enteros, demostrando comunicación síncrona.
+
+### Cliente de Acción
+
+```python
+import rclpy
+from rclpy.action import ActionClient
+from rclpy.node import Node
+from example_interfaces.action import Fibonacci
+
+class MinimalActionClient(Node):
+    def __init__(self):
+        super().__init__('minimal_action_client')
+        self._action_client = ActionClient(self, Fibonacci, 'fibonacci')
+
+    def send_goal(self, order):
+        goal_msg = Fibonacci.Goal()
+        goal_msg.order = order
+        self._action_client.wait_for_server()
+        self._send_goal_future = self._action_client.send_goal_async(goal_msg)
+
+def main(args=None):
+    rclpy.init(args=args)
+    action_client = MinimalActionClient()
+    action_client.send_goal(10)
+    rclpy.spin(action_client)
+
+if __name__ == '__main__':
+    main()
+```
+
+Esto demuestra acciones asíncronas para tareas de larga duración.
+
+---
+
+## 11. Conclusión
+
+Este tutorial ha cubierto los conceptos básicos de la instalación de ROS2 jazzy, creación de espacios de trabajo, desarrollo de paquetes, escritura de nodos publicadores y suscriptores, y creación de modelos URDF para visualización en RVIZ2. Para temas más avanzados, consulta la documentación oficial de ROS2.
