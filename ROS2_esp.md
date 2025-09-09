@@ -40,13 +40,7 @@ Para instrucciones detalladas de instalación, consulta la [Guía de Instalació
 
 ### 1.1. Configurar fuentes
 
-```sh
-sudo apt install software-properties-common
-sudo add-apt-repository universe
-sudo apt update && sudo apt install curl -y
-sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
-echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null
-```
+
 
 ### 1.2. Instalar paquetes de ROS2
 
@@ -124,7 +118,7 @@ Para crear un nuevo paquete ROS 2, puedes usar el siguiente comando:
 
 ```sh
 cd ~/ros2_ws/src
-ros2 pkg create --build-type ament_cmake <package_name>
+ros2 pkg create --build-type ament_python <package_name>
 ```
 
 ### 3.1. Compilar el paquete ROS2
