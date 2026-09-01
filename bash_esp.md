@@ -5,9 +5,9 @@
 ---
 
 ## Índice
-1. [Introducción](#1-introduccion)
+1. [Introducción](#1-introducci%C3%B3n)
 2. [Abrir la Terminal](#2-abrir-la-terminal)
-3. [Comandos Básicos](#3-comandos-basicos)
+3. [Comandos Básicos](#3-comandos-b%C3%A1sicos)
     - [pwd](#pwd)
     - [ls](#ls)
     - [ls -a](#ls--a)
@@ -21,7 +21,7 @@
     - [cat](#cat)
     - [nano](#nano)
     - [touch](#touch)
-5. [Información del Sistema](#5-informacion-del-sistema)
+5. [Información del Sistema](#5-informaci%C3%B3n-del-sistema)
     - [uname](#uname)
     - [top](#top)
     - [df](#df)
