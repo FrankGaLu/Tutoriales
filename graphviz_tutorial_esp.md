@@ -6,7 +6,7 @@
 
 ## Índice
 
-1. [Instalacion](#1-instalacion)
+1. [Instalación](#1-instalacion)
 2. [Uso](#2-uso)
 3. [Ejemplos](#3-ejemplos)
     - [Grafo simple](#grafo-simple)
