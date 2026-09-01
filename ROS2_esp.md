@@ -6,7 +6,7 @@
 
 ## Índice
 
-1. [Instalación](#1-instalacion)
+1. [Instalación](#1-instalaci%C3%B3n)
     - [Configurar fuentes](#11-configurar-fuentes)
     - [Instalar paquetes de ROS2](#12-instalar-paquetes-de-ros2)
     - [Configurar entorno](#13-configurar-entorno)
@@ -23,12 +23,12 @@
 5. [Escribir un nodo suscriptor](#5-escribir-un-nodo-suscriptor)
     - [Agregar un entrypoint](#52-agregar-un-entrypoint)
 6. [Ejecutar los nodos ROS2](#6-ejecutar-los-nodos-ros2)
-7. [Crear un modelo URDF básico](#7-crear-un-modelo-urdf-basico)
+7. [Crear un modelo URDF básico](#7-crear-un-modelo-urdf-b%C3%A1sico)
     - [Visualizar el modelo URDF en RVIZ2](#71-visualizar-el-modelo-urdf-en-rviz2)
-8. [Crear un archivo de lanzamiento básico para visualizar el modelo URDF](#8-crear-un-archivo-de-lanzamiento-basico-para-visualizar-el-modelo-urdf)
+8. [Crear un archivo de lanzamiento básico para visualizar el modelo URDF](#8-crear-un-archivo-de-lanzamiento-b%C3%A1sico-para-visualizar-el-modelo-urdf)
 9. [Crear un modelo multiforma](#9-crear-un-modelo-multiforma)
     - [Crear un archivo de lanzamiento para visualizar el modelo URDF en RVIZ2](#91-crear-un-archivo-de-lanzamiento-para-visualizar-el-modelo-urdf-en-rviz2)
-    - [Orígenes en URDF](#92-origenes-en-urdf)
+    - [Orígenes en URDF](#92-or%C3%ADgenes-en-urdf)
     - [Materiales en URDF](#93-materiales-en-urdf)
     - [Ejemplo de un modelo multiforma](#94-ejemplo-de-un-modelo-multiforma)
 
