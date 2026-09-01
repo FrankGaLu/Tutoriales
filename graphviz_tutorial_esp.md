@@ -1,6 +1,6 @@
 # Tutorial de Graphviz
 
-**Autor: Dr. Francesco Garcia Luna**
+**Autor: Dr. Francesco Garcia-Luna**
 
 ---
 

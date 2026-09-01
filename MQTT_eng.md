@@ -1,5 +1,5 @@
 # MQTT Documentation
-**Author: Dr. Francesco Garcia Luna**
+**Author: Dr. Francesco Garcia-Luna**
 
 ---
 
