@@ -45,10 +45,13 @@ For detailed installation instructions, please refer to the [ROS2 jazzy Installa
 ### 1.2. Install ROS2 packages
 
 ```sh
+# Update packages and install ROS2 (Jazzy)
 sudo apt update
 sudo apt upgrade -y
 sudo apt install ros-jazzy-desktop-full
 ```
+
+Note: follow the official Jazzy installation guide for additional repository setup steps and keys. Consider using a Docker image or a dedicated VM if you prefer isolated environments.
 
 ### 1.3. Environment Setup
 

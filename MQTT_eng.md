@@ -19,13 +19,24 @@
 
 ## Introduction
 
-This tutorial provides a comprehensive guide to installing and configuring the Mosquitto MQTT broker on Ubuntu 22.04. It covers basic setup, configuration, and usage examples for subscribing and publishing messages via terminal and Python.
+This tutorial provides a comprehensive guide to installing and configuring the Mosquitto MQTT broker on Ubuntu 24.04 LTS. It covers basic setup, configuration, and usage examples for subscribing and publishing messages via terminal and Python.
+
+Where Python examples are shown, prefer using a virtual environment (see the Installation section).
 
 ---
 
 ## 1. Installation
 
-### Installation on Ubuntu 22.04
+### Installation on Ubuntu 24.04 LTS
+
+Note: examples use Python 3. To keep examples isolated, create a virtual environment before running Python snippets:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install paho-mqtt
+```
+
 
 1. **Update the package list:**
     ```bash

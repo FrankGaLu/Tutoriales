@@ -29,7 +29,12 @@
 
 1. Create a file with the `.dot` extension (e.g. `graph.dot`)
 2. Write the Graphviz code in the `.dot` file
-3. Compile the `.dot` file with the `dot` command from Graphviz
+3. Generate an image (PNG) from the `.dot` file with Graphviz `dot`:
+
+```bash
+dot -Tpng -o graph.png graph.dot
+```
+
 4. View the output file (e.g. `graph.png`)
 5. Modify the `.dot` file and repeat steps 3 and 4
 

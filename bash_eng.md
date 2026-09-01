@@ -78,9 +78,10 @@ rm file_name
 ```
 
 ### `rm -r`
-The `rm -r` command removes directories and their contents recursively.
+The `rm -r` command removes directories and their contents recursively. Warning: irreversible. Use `rm -ri` to prompt for confirmation or inspect the directory with `ls` first.
 ```sh
-rm -r directory_name
+# remove recursively (use -i to confirm)
+rm -ri directory_name
 ```
 
 ---

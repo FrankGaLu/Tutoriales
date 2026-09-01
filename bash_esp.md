@@ -80,9 +80,10 @@ rm nombre_archivo
 ```
 
 ### `rm -r`
-El comando `rm -r` elimina directorios y su contenido de forma recursiva.
+El comando `rm -r` elimina directorios y su contenido de forma recursiva. Cuidado: es irreversible. Para confirmación interactiva usa `rm -ri` o revisa el contenido antes con `ls`.
 ```sh
-rm -r nombre_directorio
+# borrar recursivamente (se recomendar usar con -i para confirmar)
+rm -ri nombre_directorio
 ```
 
 ---

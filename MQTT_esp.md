@@ -27,6 +27,15 @@ Este tutorial proporciona una guía completa para instalar y configurar el broke
 
 ### Instalación en Ubuntu 24.04 LTS
 
+Nota: los ejemplos Python usan Python 3. Para aislar dependencias, crea un entorno virtual antes de ejecutar los snippets:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install paho-mqtt
+```
+
+
 1. **Actualiza la lista de paquetes:**
     ```bash
     sudo apt update
