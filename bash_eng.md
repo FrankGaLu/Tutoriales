@@ -1,6 +1,6 @@
 # Basic Terminal Tutorial
 
-***Author: Dr. Francesco Garcia-Luna***
+**Author: Dr. Francesco Garcia-Luna**
 
 ---
 
@@ -10,11 +10,11 @@
 3. [Basic Commands](#3-basic-commands)
     - [pwd](#pwd)
     - [ls](#ls)
-    - [ls -a](#ls-a)
+    - [ls -a](#ls--a)
     - [cd](#cd)
     - [mkdir](#mkdir)
     - [rm](#rm)
-    - [rm -r](#rm-r)
+    - [rm -r](#rm--r)
 4. [File Operations](#4-file-operations)
     - [cp](#cp)
     - [mv](#mv)
@@ -78,9 +78,10 @@ rm file_name
 ```
 
 ### `rm -r`
-The `rm -r` command removes directories and their contents recursively.
+The `rm -r` command removes directories and their contents recursively. Warning: irreversible. Use `rm -ri` to prompt for confirmation or inspect the directory with `ls` first.
 ```sh
-rm -r directory_name
+# remove recursively (use -i to confirm)
+rm -ri directory_name
 ```
 
 ---

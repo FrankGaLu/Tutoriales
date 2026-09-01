@@ -1,27 +1,27 @@
 # Tutorial Básico de Terminal
 
-***Autor: Dr. Francesco Garcia-Luna***
+**Autor: Dr. Francesco Garcia-Luna**
 
 ---
 
 ## Índice
-1. [Introducción](#1-introduccion)
+1. [Introducción](#1-introducci%C3%B3n)
 2. [Abrir la Terminal](#2-abrir-la-terminal)
-3. [Comandos Básicos](#3-comandos-basicos)
+3. [Comandos Básicos](#3-comandos-b%C3%A1sicos)
     - [pwd](#pwd)
     - [ls](#ls)
-    - [ls -a](#ls-a)
+    - [ls -a](#ls--a)
     - [cd](#cd)
     - [mkdir](#mkdir)
     - [rm](#rm)
-    - [rm -r](#rm-r)
+    - [rm -r](#rm--r)
 4. [Operaciones con Archivos](#4-operaciones-con-archivos)
     - [cp](#cp)
     - [mv](#mv)
     - [cat](#cat)
     - [nano](#nano)
     - [touch](#touch)
-5. [Información del Sistema](#5-informacion-del-sistema)
+5. [Información del Sistema](#5-informaci%C3%B3n-del-sistema)
     - [uname](#uname)
     - [top](#top)
     - [df](#df)
@@ -80,9 +80,10 @@ rm nombre_archivo
 ```
 
 ### `rm -r`
-El comando `rm -r` elimina directorios y su contenido de forma recursiva.
+El comando `rm -r` elimina directorios y su contenido de forma recursiva. Cuidado: es irreversible. Para confirmación interactiva usa `rm -ri` o revisa el contenido antes con `ls`.
 ```sh
-rm -r nombre_directorio
+# borrar recursivamente (se recomendar usar con -i para confirmar)
+rm -ri nombre_directorio
 ```
 
 ---

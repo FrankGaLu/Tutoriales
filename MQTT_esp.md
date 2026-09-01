@@ -1,19 +1,19 @@
 # Documentación de MQTT
-**Autor: Dr. Francesco Garcia Luna**
+**Autor: Dr. Francesco Garcia-Luna**
 
 ---
 
 ## ÍNDICE
 
-1. [Instalación](#1-instalacion)
-2. [Configuración](#2-configuracion)
-3. [Suscribirse a un Tópico por Terminal](#3-suscribirse-a-un-topico-por-terminal)
-4. [Publicar en un Tópico por Terminal](#4-publicar-en-un-topico-por-terminal)
-5. [Publicar en un Tópico por Terminal (JSON)](#5-publicar-en-un-topico-por-terminal-json)
-6. [Suscribirse a un Tópico (Python)](#6-suscribirse-a-un-topico-python)
-7. [Publicar en un Tópico (Python)](#7-publicar-en-un-topico-python)
-8. [Publicar en un Tópico (Python) (JSON)](#8-publicar-en-un-topico-python-json)
-9. [Conclusión](#9-conclusion)
+1. [Instalación](#1-instalaci%C3%B3n)
+2. [Configuración](#2-configuraci%C3%B3n)
+3. [Suscribirse a un Tópico por Terminal](#3-suscribirse-a-un-t%C3%B3pico-por-terminal)
+4. [Publicar en un Tópico por Terminal](#4-publicar-en-un-t%C3%B3pico-por-terminal)
+5. [Publicar en un Tópico por Terminal (JSON)](#5-publicar-en-un-t%C3%B3pico-por-terminal-json)
+6. [Suscribirse a un Tópico (Python)](#6-suscribirse-a-un-t%C3%B3pico-python)
+7. [Publicar en un Tópico (Python)](#7-publicar-en-un-t%C3%B3pico-python)
+8. [Publicar en un Tópico (Python) (JSON)](#8-publicar-en-un-t%C3%B3pico-python-json)
+9. [Conclusión](#9-conclusi%C3%B3n)
 
 ---
 
@@ -25,7 +25,16 @@ Este tutorial proporciona una guía completa para instalar y configurar el broke
 
 ## 1. Instalación
 
-### Instalación en Ubuntu 24.04
+### Instalación en Ubuntu 24.04 LTS
+
+Nota: los ejemplos Python usan Python 3. Para aislar dependencias, crea un entorno virtual antes de ejecutar los snippets:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install paho-mqtt
+```
+
 
 1. **Actualiza la lista de paquetes:**
     ```bash

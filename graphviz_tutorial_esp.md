@@ -1,12 +1,12 @@
 # Tutorial de Graphviz
 
-*Autor: Dr. Francesco Garcia Luna*
+**Autor: Dr. Francesco Garcia-Luna**
 
 ---
 
-## Indice
+## Índice
 
-1. [Instalacion](#1-instalacion)
+1. [Instalación](#1-instalaci%C3%B3n)
 2. [Uso](#2-uso)
 3. [Ejemplos](#3-ejemplos)
     - [Grafo simple](#grafo-simple)
@@ -19,7 +19,7 @@
 
 ---
 
-## 1. Instalacion
+## 1. Instalación
 
 - Ubuntu: `sudo apt-get install graphviz`
 - Windows: Descargar de [Graphviz](https://graphviz.gitlab.io/download/)
@@ -27,9 +27,14 @@
 
 ## 2. Uso
 
-1. Crear un archivo con extension `.dot` (ej. `graph.dot`)
+1. Crear un archivo con extensión `.dot` (ej. `graph.dot`)
 2. Escribir el codigo de Graphviz en el archivo `.dot`
-3. Compilar el archivo `.dot` con el comando `dot` de Graphviz
+3. Generar una imagen (PNG) desde el `.dot` con el comando `dot` de Graphviz:
+
+```bash
+dot -Tpng -o graph.png graph.dot
+```
+
 4. Visualizar el archivo de salida (ej. `graph.png`)
 5. Modificar el archivo `.dot` y repetir los pasos 3 y 4
 

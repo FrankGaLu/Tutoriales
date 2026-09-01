@@ -1,5 +1,5 @@
 # MQTT Documentation
-**Author: Dr. Francesco Garcia Luna**
+**Author: Dr. Francesco Garcia-Luna**
 
 ---
 
@@ -19,13 +19,24 @@
 
 ## Introduction
 
-This tutorial provides a comprehensive guide to installing and configuring the Mosquitto MQTT broker on Ubuntu 22.04. It covers basic setup, configuration, and usage examples for subscribing and publishing messages via terminal and Python.
+This tutorial provides a comprehensive guide to installing and configuring the Mosquitto MQTT broker on Ubuntu 24.04 LTS. It covers basic setup, configuration, and usage examples for subscribing and publishing messages via terminal and Python.
+
+Where Python examples are shown, prefer using a virtual environment (see the Installation section).
 
 ---
 
 ## 1. Installation
 
-### Installation on Ubuntu 22.04
+### Installation on Ubuntu 24.04 LTS
+
+Note: examples use Python 3. To keep examples isolated, create a virtual environment before running Python snippets:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install paho-mqtt
+```
+
 
 1. **Update the package list:**
     ```bash
@@ -235,13 +246,6 @@ Replace `localhost` with the IP address or hostname of the MQTT broker, `topic` 
 ---
 
 ## 9. Conclusion
-
-In this guide, we have covered the installation and basic configuration of the Mosquitto MQTT broker on Ubuntu 22.04. We have also shown how to subscribe to and publish messages to topics using the Mosquitto command-line client and the Paho MQTT Python client.
-
-For more information on Mosquitto and MQTT, refer to the official documentation:
-
-- [Mosquitto Documentation](https://mosquitto.org/documentation/)
-- [MQTT Essentials](https://www.hivemq.com/mqtt-essentials/)
 
 In this guide, we have covered the installation and basic configuration of the Mosquitto MQTT broker on Ubuntu 22.04. We have also shown how to subscribe to and publish messages to topics using the Mosquitto command-line client and the Paho MQTT Python client.
 

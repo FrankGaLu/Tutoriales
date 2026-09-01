@@ -1,6 +1,6 @@
 # Basic ROS2 jazzy Tutorial
 
-***Author: Dr. Francesco Garcia-Luna***
+**Author: Dr. Francesco Garcia-Luna**
 
 ---
 
@@ -45,10 +45,13 @@ For detailed installation instructions, please refer to the [ROS2 jazzy Installa
 ### 1.2. Install ROS2 packages
 
 ```sh
+# Update packages and install ROS2 (Jazzy)
 sudo apt update
 sudo apt upgrade -y
 sudo apt install ros-jazzy-desktop-full
 ```
+
+Note: follow the official Jazzy installation guide for additional repository setup steps and keys. Consider using a Docker image or a dedicated VM if you prefer isolated environments.
 
 ### 1.3. Environment Setup
 
@@ -398,6 +401,115 @@ And, the next lines to the `package.xml` file:
     <launch_file>display.launch.py</launch_file>
 </export>
 ```
+
+## 9. Advanced ROS2 examples: Services, Actions, Parameters and CLI tools
+
+### Services (Python)
+
+Service server (AddTwoInts example using example_interfaces):
+
+```python
+from example_interfaces.srv import AddTwoInts
+import rclpy
+from rclpy.node import Node
+
+class AddTwoIntsServer(Node):
+    def __init__(self):
+        super().__init__('add_two_ints_server')
+        self.srv = self.create_service(AddTwoInts, 'add_two_ints', self.handle_add)
+
+    def handle_add(self, request, response):
+        response.sum = request.a + request.b
+        self.get_logger().info(f'Incoming request: {request.a} + {request.b}')
+        return response
+
+def main(args=None):
+    rclpy.init(args=args)
+    node = AddTwoIntsServer()
+    rclpy.spin(node)
+    node.destroy_node()
+    rclpy.shutdown()
+```
+
+Client example (call from Python):
+
+```python
+import rclpy
+from rclpy.node import Node
+from example_interfaces.srv import AddTwoInts
+
+rclpy.init()
+node = rclpy.create_node('add_two_ints_client')
+cli = node.create_client(AddTwoInts, 'add_two_ints')
+if not cli.wait_for_service(timeout_sec=5.0):
+    node.get_logger().error('Service not available')
+    raise RuntimeError('Service not available')
+req = AddTwoInts.Request()
+req.a = 2
+req.b = 3
+future = cli.call_async(req)
+rclpy.spin_until_future_complete(node, future)
+print('Result:', future.result().sum)
+node.destroy_node()
+rclpy.shutdown()
+```
+
+CLI equivalents:
+
+- List services: `ros2 service list`
+- Call service: `ros2 service call /add_two_ints example_interfaces/srv/AddTwoInts "{a: 2, b: 3}"`
+
+### Actions (overview)
+
+Actions are long-running tasks with feedback and result. For many examples consult `rclpy` action tutorials. Typical flow:
+
+- Define an action in an `action/*.action` file.
+- Generate interfaces (colcon build will generate the Python stubs).
+- Implement an ActionServer and ActionClient in Python.
+
+Skeleton server (pseudocode):
+
+```python
+# See ROS2 official examples for full Action server/client implementations (Fibonacci, etc.)
+```
+
+### Parameters and dynamic configuration
+
+Set and get parameters from CLI:
+
+- Set parameter: `ros2 param set /node_name my_param 42`
+- Get parameter: `ros2 param get /node_name my_param`
+- List params: `ros2 param list /node_name`
+
+In code, declare parameters in a node:
+
+```python
+self.declare_parameter('rate', 10)
+rate = self.get_parameter('rate').value
+```
+
+### Useful ROS2 CLI commands
+
+- Topics: `ros2 topic list`, `ros2 topic echo /topic`, `ros2 topic pub /topic std_msgs/msg/String "{data: 'hello'}"`
+- Services: `ros2 service list`, `ros2 service call ...`
+- Actions: `ros2 action list`, `ros2 action send_goal ...`
+- Parameters: `ros2 param` commands
+- Bag: record and playback: `ros2 bag record -a` and `ros2 bag play <bag>`
+- Nodes: `ros2 node list`, `ros2 node info /node_name`
+
+### Debugging and troubleshooting
+
+- If `ros2 run` errors: ensure you sourced the workspace: `source install/setup.bash`.
+- Use `colcon build --symlink-install` during development to ease iterative changes.
+- Common missing-dependency errors: install system packages (ROS2 packages, python3-colcon-common-extensions) or run `rosdep install --from-paths src --ignore-src -r -y`.
+
+### References and further reading
+
+- Official ROS2 docs: https://docs.ros.org/en/rolling/
+- rclpy examples: https://github.com/ros2/examples
+
+---
+
 
 Finally, compile and source the workspace, and run the launch file:
 

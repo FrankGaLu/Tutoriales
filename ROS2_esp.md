@@ -1,12 +1,12 @@
 # Tutorial básico de ROS2 jazzy
 
-***Autor: Dr. Francesco Garcia-Luna***
+**Autor: Dr. Francesco Garcia-Luna**
 
 ---
 
 ## Índice
 
-1. [Instalación](#1-instalacion)
+1. [Instalación](#1-instalaci%C3%B3n)
     - [Configurar fuentes](#11-configurar-fuentes)
     - [Instalar paquetes de ROS2](#12-instalar-paquetes-de-ros2)
     - [Configurar entorno](#13-configurar-entorno)
@@ -23,12 +23,12 @@
 5. [Escribir un nodo suscriptor](#5-escribir-un-nodo-suscriptor)
     - [Agregar un entrypoint](#52-agregar-un-entrypoint)
 6. [Ejecutar los nodos ROS2](#6-ejecutar-los-nodos-ros2)
-7. [Crear un modelo URDF básico](#7-crear-un-modelo-urdf-basico)
+7. [Crear un modelo URDF básico](#7-crear-un-modelo-urdf-b%C3%A1sico)
     - [Visualizar el modelo URDF en RVIZ2](#71-visualizar-el-modelo-urdf-en-rviz2)
-8. [Crear un archivo de lanzamiento básico para visualizar el modelo URDF](#8-crear-un-archivo-de-lanzamiento-basico-para-visualizar-el-modelo-urdf)
+8. [Crear un archivo de lanzamiento básico para visualizar el modelo URDF](#8-crear-un-archivo-de-lanzamiento-b%C3%A1sico-para-visualizar-el-modelo-urdf)
 9. [Crear un modelo multiforma](#9-crear-un-modelo-multiforma)
     - [Crear un archivo de lanzamiento para visualizar el modelo URDF en RVIZ2](#91-crear-un-archivo-de-lanzamiento-para-visualizar-el-modelo-urdf-en-rviz2)
-    - [Orígenes en URDF](#92-origenes-en-urdf)
+    - [Orígenes en URDF](#92-or%C3%ADgenes-en-urdf)
     - [Materiales en URDF](#93-materiales-en-urdf)
     - [Ejemplo de un modelo multiforma](#94-ejemplo-de-un-modelo-multiforma)
 
@@ -45,10 +45,13 @@ Para instrucciones detalladas de instalación, consulta la [Guía de Instalació
 ### 1.2. Instalar paquetes de ROS2
 
 ```sh
+# Actualizar paquetes e instalar ROS2 (jazzy)
 sudo apt update
 sudo apt upgrade -y
 sudo apt install ros-jazzy-desktop-full
 ```
+
+Nota: sigue la guía oficial de instalación de Jazzy para pasos adicionales de configuración de repositorios y claves. Considera usar Docker o una VM dedicada si quieres un entorno aislado.
 
 ### 1.3. Configurar entorno
 
@@ -398,6 +401,111 @@ Y, las siguientes líneas al archivo `package.xml`:
     <launch_file>display.launch.py</launch_file>
 </export>
 ```
+
+## 9. Ejemplos avanzados de ROS2: Servicios, Acciones, Parámetros y herramientas CLI
+
+### Servicios (Python)
+
+Servidor de servicio (AddTwoInts usando example_interfaces):
+
+```python
+from example_interfaces.srv import AddTwoInts
+import rclpy
+from rclpy.node import Node
+
+class AddTwoIntsServer(Node):
+    def __init__(self):
+        super().__init__('add_two_ints_server')
+        self.srv = self.create_service(AddTwoInts, 'add_two_ints', self.handle_add)
+
+    def handle_add(self, request, response):
+        response.sum = request.a + request.b
+        self.get_logger().info(f'Solicitud recibida: {request.a} + {request.b}')
+        return response
+
+def main(args=None):
+    rclpy.init(args=args)
+    node = AddTwoIntsServer()
+    rclpy.spin(node)
+    node.destroy_node()
+    rclpy.shutdown()
+```
+
+Cliente (llamada desde Python):
+
+```python
+import rclpy
+from rclpy.node import Node
+from example_interfaces.srv import AddTwoInts
+
+rclpy.init()
+node = rclpy.create_node('add_two_ints_client')
+cli = node.create_client(AddTwoInts, 'add_two_ints')
+if not cli.wait_for_service(timeout_sec=5.0):
+    node.get_logger().error('Servicio no disponible')
+    raise RuntimeError('Servicio no disponible')
+req = AddTwoInts.Request()
+req.a = 2
+req.b = 3
+future = cli.call_async(req)
+rclpy.spin_until_future_complete(node, future)
+print('Resultado:', future.result().sum)
+node.destroy_node()
+rclpy.shutdown()
+```
+
+Equivalentes CLI:
+
+- Listar servicios: `ros2 service list`
+- Llamar servicio: `ros2 service call /add_two_ints example_interfaces/srv/AddTwoInts "{a: 2, b: 3}"`
+
+### Acciones (visión general)
+
+Las acciones son tareas de larga duración con feedback y resultado. Flujo típico:
+
+- Definir acción en `action/*.action`.
+- Generar interfaces (colcon build).
+- Implementar ActionServer y ActionClient en Python.
+
+Para ejemplos completos revisa los ejemplos oficiales de `rclpy` (Fibonacci, etc.).
+
+### Parámetros y configuración dinámica
+
+Ejemplos CLI:
+
+- Poner parámetro: `ros2 param set /node_name my_param 42`
+- Obtener parámetro: `ros2 param get /node_name my_param`
+- Listar: `ros2 param list /node_name`
+
+En código:
+
+```python
+self.declare_parameter('rate', 10)
+rate = self.get_parameter('rate').value
+```
+
+### Comandos útiles de ROS2
+
+- Topics: `ros2 topic list`, `ros2 topic echo /topic`, `ros2 topic pub /topic std_msgs/msg/String "{data: 'hola'}"`
+- Servicios: `ros2 service list`, `ros2 service call ...`
+- Acciones: `ros2 action list`, `ros2 action send_goal ...`
+- Parámetros: `ros2 param ...`
+- Bag: `ros2 bag record -a`, `ros2 bag play <bag>`
+- Nodos: `ros2 node list`, `ros2 node info /node_name`
+
+### Depuración y resolución de problemas
+
+- Si `ros2 run` falla: asegúrate de `source install/setup.bash`.
+- Usa `colcon build --symlink-install` durante desarrollo.
+- Errores por dependencias: instalar paquetes del sistema o correr `rosdep install --from-paths src --ignore-src -r -y`.
+
+### Referencias
+
+- Documentación oficial ROS2: https://docs.ros.org/en/rolling/
+- Ejemplos rclpy: https://github.com/ros2/examples
+
+---
+
 
 Finalmente, compila y configura el espacio de trabajo, y ejecuta el archivo de lanzamiento:
 
