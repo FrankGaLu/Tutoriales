@@ -1,6 +1,6 @@
 # Basic ROS2 jazzy Tutorial
 
-***Author: Dr. Francesco Garcia-Luna***
+**Author: Dr. Francesco Garcia-Luna**
 
 ---
 

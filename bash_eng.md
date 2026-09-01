@@ -1,6 +1,6 @@
 # Basic Terminal Tutorial
 
-***Author: Dr. Francesco Garcia-Luna***
+**Author: Dr. Francesco Garcia-Luna**
 
 ---
 
