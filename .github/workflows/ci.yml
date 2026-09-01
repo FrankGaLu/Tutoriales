@@ -1,0 +1,63 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, '**' ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  validate-markdown-python:
+    runs-on: ubuntu-latest
+    name: Validate Python code blocks in Markdown
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install pip
+        run: python -m pip install --upgrade pip
+
+      - name: Extract and compile Python blocks from Markdown
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+import glob, os, py_compile, sys
+repo_root = os.getcwd()
+md_files = glob.glob('**/*.md', recursive=True)
+if not md_files:
+    print('No markdown files found.')
+    sys.exit(0)
+outdir = os.path.join(repo_root, '.tmp_md_py')
+os.makedirs(outdir, exist_ok=True)
+errors = []
+for md in md_files:
+    with open(md, 'r', encoding='utf-8', errors='ignore') as f:
+        text = f.read()
+    parts = text.split('```python')
+    if len(parts) <= 1:
+        continue
+    for i, part in enumerate(parts[1:], start=1):
+        code = part.split('```', 1)[0].lstrip('\n')
+        # create a safe filename
+        safe = md.replace(os.sep, '__').replace('/', '__')
+        fname = os.path.join(outdir, f"{safe}_block{i}.py")
+        with open(fname, 'w', encoding='utf-8') as fo:
+            fo.write(f"# Source: {md}\n" + code)
+        try:
+            py_compile.compile(fname, doraise=True)
+            print('OK', fname)
+        except py_compile.PyCompileError as e:
+            print('ERROR', fname)
+            print(e)
+            errors.append((fname, str(e)))
+if errors:
+    print('\nSUMMARY: Found {} failing python blocks'.format(len(errors)))
+    sys.exit(1)
+else:
+    print('\nAll Python blocks compiled successfully.')
+PY
