@@ -4,7 +4,7 @@
 
 ---
 
-## Indice
+## Índice
 
 1. [Instalacion](#1-instalacion)
 2. [Uso](#2-uso)
@@ -19,7 +19,7 @@
 
 ---
 
-## 1. Instalacion
+## 1. Instalación
 
 - Ubuntu: `sudo apt-get install graphviz`
 - Windows: Descargar de [Graphviz](https://graphviz.gitlab.io/download/)

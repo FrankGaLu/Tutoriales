@@ -25,7 +25,7 @@ Este tutorial proporciona una guía completa para instalar y configurar el broke
 
 ## 1. Instalación
 
-### Instalación en Ubuntu 24.04
+### Instalación en Ubuntu 22.04 LTS
 
 1. **Actualiza la lista de paquetes:**
     ```bash

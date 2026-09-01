@@ -242,10 +242,3 @@ For more information on Mosquitto and MQTT, refer to the official documentation:
 
 - [Mosquitto Documentation](https://mosquitto.org/documentation/)
 - [MQTT Essentials](https://www.hivemq.com/mqtt-essentials/)
-
-In this guide, we have covered the installation and basic configuration of the Mosquitto MQTT broker on Ubuntu 22.04. We have also shown how to subscribe to and publish messages to topics using the Mosquitto command-line client and the Paho MQTT Python client.
-
-For more information on Mosquitto and MQTT, refer to the official documentation:
-
-- [Mosquitto Documentation](https://mosquitto.org/documentation/)
-- [MQTT Essentials](https://www.hivemq.com/mqtt-essentials/)
