@@ -1,3 +1,5 @@
+[![CI](https://github.com/FrankGaLu/Tutoriales/actions/workflows/ci.yml/badge.svg)](https://github.com/FrankGaLu/Tutoriales/actions/workflows/ci.yml)
+
 # Tutoriales — FrankGaLu
 
 Colección de tutoriales técnicos mantenidos por Dr. Francesco Garcia-Luna.
