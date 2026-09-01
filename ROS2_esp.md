@@ -402,6 +402,111 @@ Y, las siguientes líneas al archivo `package.xml`:
 </export>
 ```
 
+## 9. Ejemplos avanzados de ROS2: Servicios, Acciones, Parámetros y herramientas CLI
+
+### Servicios (Python)
+
+Servidor de servicio (AddTwoInts usando example_interfaces):
+
+```python
+from example_interfaces.srv import AddTwoInts
+import rclpy
+from rclpy.node import Node
+
+class AddTwoIntsServer(Node):
+    def __init__(self):
+        super().__init__('add_two_ints_server')
+        self.srv = self.create_service(AddTwoInts, 'add_two_ints', self.handle_add)
+
+    def handle_add(self, request, response):
+        response.sum = request.a + request.b
+        self.get_logger().info(f'Solicitud recibida: {request.a} + {request.b}')
+        return response
+
+def main(args=None):
+    rclpy.init(args=args)
+    node = AddTwoIntsServer()
+    rclpy.spin(node)
+    node.destroy_node()
+    rclpy.shutdown()
+```
+
+Cliente (llamada desde Python):
+
+```python
+import rclpy
+from rclpy.node import Node
+from example_interfaces.srv import AddTwoInts
+
+rclpy.init()
+node = rclpy.create_node('add_two_ints_client')
+cli = node.create_client(AddTwoInts, 'add_two_ints')
+if not cli.wait_for_service(timeout_sec=5.0):
+    node.get_logger().error('Servicio no disponible')
+    raise RuntimeError('Servicio no disponible')
+req = AddTwoInts.Request()
+req.a = 2
+req.b = 3
+future = cli.call_async(req)
+rclpy.spin_until_future_complete(node, future)
+print('Resultado:', future.result().sum)
+node.destroy_node()
+rclpy.shutdown()
+```
+
+Equivalentes CLI:
+
+- Listar servicios: `ros2 service list`
+- Llamar servicio: `ros2 service call /add_two_ints example_interfaces/srv/AddTwoInts "{a: 2, b: 3}"`
+
+### Acciones (visión general)
+
+Las acciones son tareas de larga duración con feedback y resultado. Flujo típico:
+
+- Definir acción en `action/*.action`.
+- Generar interfaces (colcon build).
+- Implementar ActionServer y ActionClient en Python.
+
+Para ejemplos completos revisa los ejemplos oficiales de `rclpy` (Fibonacci, etc.).
+
+### Parámetros y configuración dinámica
+
+Ejemplos CLI:
+
+- Poner parámetro: `ros2 param set /node_name my_param 42`
+- Obtener parámetro: `ros2 param get /node_name my_param`
+- Listar: `ros2 param list /node_name`
+
+En código:
+
+```python
+self.declare_parameter('rate', 10)
+rate = self.get_parameter('rate').value
+```
+
+### Comandos útiles de ROS2
+
+- Topics: `ros2 topic list`, `ros2 topic echo /topic`, `ros2 topic pub /topic std_msgs/msg/String "{data: 'hola'}"`
+- Servicios: `ros2 service list`, `ros2 service call ...`
+- Acciones: `ros2 action list`, `ros2 action send_goal ...`
+- Parámetros: `ros2 param ...`
+- Bag: `ros2 bag record -a`, `ros2 bag play <bag>`
+- Nodos: `ros2 node list`, `ros2 node info /node_name`
+
+### Depuración y resolución de problemas
+
+- Si `ros2 run` falla: asegúrate de `source install/setup.bash`.
+- Usa `colcon build --symlink-install` durante desarrollo.
+- Errores por dependencias: instalar paquetes del sistema o correr `rosdep install --from-paths src --ignore-src -r -y`.
+
+### Referencias
+
+- Documentación oficial ROS2: https://docs.ros.org/en/rolling/
+- Ejemplos rclpy: https://github.com/ros2/examples
+
+---
+
+
 Finalmente, compila y configura el espacio de trabajo, y ejecuta el archivo de lanzamiento:
 
 ```bash
