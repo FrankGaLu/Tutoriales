@@ -102,7 +102,8 @@ The default configuration file is well-documented and contains many useful examp
     ```bash
     allow_anonymous true
     ```
-    By default, anonymous connections are allowed. If you want to require authentication, set this to `false`.
+    This option is suitable only for a local test and must not be exposed to the Internet.
+    For a shared broker, use `false` and configure authentication.
 
 4. **Password File:**
     ```bash
@@ -247,7 +248,7 @@ Replace `localhost` with the IP address or hostname of the MQTT broker, `topic` 
 
 ## 9. Conclusion
 
-In this guide, we have covered the installation and basic configuration of the Mosquitto MQTT broker on Ubuntu 22.04. We have also shown how to subscribe to and publish messages to topics using the Mosquitto command-line client and the Paho MQTT Python client.
+In this guide, we have covered the installation and basic configuration of the Mosquitto MQTT broker on Ubuntu 24.04. We have also shown how to subscribe to and publish messages to topics using the Mosquitto command-line client and the Paho MQTT Python client.
 
 For more information on Mosquitto and MQTT, refer to the official documentation:
 

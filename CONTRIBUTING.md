@@ -1,22 +1,26 @@
-Contributing to Tutoriales
+# Contribuir a Tutoriales
 
-Thank you for your interest! This repository contains tutorial markdown files intended for students and hobbyists.
+Este repositorio contiene guías Markdown y ejemplos dirigidos a estudiantes y
+personas que aprenden por su cuenta.
 
-How to contribute
+## Flujo de trabajo
 
-1. Fork the repository and create a feature branch from main.
-2. Make small, focused edits. Keep commits atomic and include a clear message.
-3. Run local checks before opening a PR:
-   - Validate Python snippets: python3 -m py_compile <path-to-snippet>.py (or use the CI job that extracts snippets and compiles them).
-   - Check links: npm install -g markdown-link-check && markdown-link-check README.md
-4. Open a Pull Request against main and reference any relevant issues.
+1. Crea una rama a partir de `main`.
+2. Haz cambios pequeños y enfocados, con mensajes de commit descriptivos.
+3. Ejecuta `bash -n install_mosquitto.sh install_ros2.sh` y la comprobación
+   Python documentada en el [README](README.md).
+4. Revisa los enlaces Markdown y abre un Pull Request describiendo el cambio,
+   el entorno usado y cualquier limitación conocida.
 
-Guidelines
+## Criterios para nuevos ejemplos
 
-- Keep examples simple and runnable.
-- When adding code snippets, prefer including minimal reproducible examples and note dependencies.
-- Add images under ros2_tutorial_images/ or a new docs/images/ directory and reference them with relative paths.
+- Mantén los ejemplos simples, autocontenidos y ejecutables.
+- Declara la versión del sistema y las dependencias cuando sean relevantes.
+- Evita comandos destructivos o accesibles desde Internet por defecto; explica
+  sus implicaciones cuando sean necesarios.
+- Añade imágenes bajo `ros2_tutorial_images/` o `docs/images/` y usa rutas relativas.
+- Mantén las versiones española e inglesa sincronizadas cuando exista ambas.
 
-License
+## Licencia
 
-The repository is provided under the MIT license (adjust as needed).
+Las contribuciones se publican bajo la [licencia MIT](LICENSE).

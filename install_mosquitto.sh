@@ -6,24 +6,24 @@ set -euo pipefail
 IFS=$'\n\t'
 
 DRY_RUN=0
-if [[ ${1:-} == "--dry-run" ]]; then
-    DRY_RUN=1
-fi
+case ${1:-} in
+    "") ;;
+    --dry-run) DRY_RUN=1 ;;
+    *) echo "Uso: $0 [--dry-run]" >&2; exit 2 ;;
+esac
 
-TOTAL_STEPS=5
+TOTAL_STEPS=4
 LABELS=(
     "Actualizar índices y instalar curl"
     "Instalar Mosquitto y clientes"
-    "Configurar Mosquitto para conexiones externas"
-    "Permitir acceso anónimo"
+    "Configurar Mosquitto para acceso local"
     "Reiniciar servicio Mosquitto"
 )
 
 CMDS=(
     "sudo apt update && sudo apt install -y curl"
     "sudo apt install -y mosquitto mosquitto-clients"
-    "echo 'listener 1883 0.0.0.0' | sudo tee /etc/mosquitto/conf.d/external.conf > /dev/null"
-    "echo 'allow_anonymous true' | sudo tee -a /etc/mosquitto/conf.d/external.conf > /dev/null"
+    "printf 'listener 1883 127.0.0.1\\nallow_anonymous true\\n' | sudo tee /etc/mosquitto/conf.d/local.conf > /dev/null"
     "sudo systemctl restart mosquitto"
 )
 
@@ -89,7 +89,7 @@ run_step() {
         return 0
     fi
 
-    if bash -c "$cmd"; then
+    if bash -euo pipefail -c "$cmd"; then
         printf "%b[OK]%b %s\n" "$GREEN" "$RESET" "$label"
         return 0
     else

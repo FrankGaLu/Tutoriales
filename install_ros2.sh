@@ -6,15 +6,16 @@ set -euo pipefail
 IFS=$'\n\t'
 
 DRY_RUN=0
-if [[ ${1:-} == "--dry-run" ]]; then
-	DRY_RUN=1
-fi
+case ${1:-} in
+	"") ;;
+	--dry-run) DRY_RUN=1 ;;
+	*) echo "Uso: $0 [--dry-run]" >&2; exit 2 ;;
+esac
 
-TOTAL_STEPS=8
+TOTAL_STEPS=7
 LABELS=(
 	"Actualizar índices y instalar curl"
-	"Obtener versión más reciente de ros-apt-source"
-	"Descargar paquete ros2-apt-source"
+	"Descargar ros2-apt-source"
 	"Instalar paquete ros2-apt-source"
 	"Actualizar índices APT (después del source)"
 	"Actualizar paquetes del sistema"
@@ -24,8 +25,7 @@ LABELS=(
 
 CMDS=(
 	"sudo apt update && sudo apt install -y curl"
-	"echo \"Obtener versión (se calculará antes de ejecutar)\""
-	"echo \"Descargar paquete (se usará URL calculada)\""
+	"version=\$(curl -fsSL https://api.github.com/repos/ros-infrastructure/ros-apt-source/releases/latest | sed -n 's/.*\"tag_name\": \"\\([^\"]*\\)\".*/\\1/p'); . /etc/os-release; test -n \"\$version\"; curl -fL -o /tmp/ros2-apt-source.deb \"https://github.com/ros-infrastructure/ros-apt-source/releases/download/\${version}/ros2-apt-source_\${version}.\${VERSION_CODENAME}_all.deb\""
 	"sudo dpkg -i /tmp/ros2-apt-source.deb"
 	"sudo apt update"
 	"sudo DEBIAN_FRONTEND=noninteractive apt -y upgrade"
@@ -33,30 +33,6 @@ CMDS=(
 	"sudo DEBIAN_FRONTEND=noninteractive apt -y install python3-colcon-common-extensions"
 )
 
-# Pre-compute ROS apt source version and download URL so commands can use them
-ROS_APT_SOURCE_VERSION=""
-DOWNLOAD_URL=""
-if command -v curl >/dev/null 2>&1; then
-	# Try to get the latest tag name from GitHub
-	ROS_APT_SOURCE_VERSION=$(curl -s https://api.github.com/repos/ros-infrastructure/ros-apt-source/releases/latest | grep -F "tag_name" | awk -F\" '{print $4}' || true)
-fi
-if [[ -f /etc/os-release ]]; then
-	# shellcheck disable=SC1091
-	. /etc/os-release
-fi
-if [[ -n "$ROS_APT_SOURCE_VERSION" && -n "${VERSION_CODENAME:-}" ]]; then
-	DOWNLOAD_URL="https://github.com/ros-infrastructure/ros-apt-source/releases/download/${ROS_APT_SOURCE_VERSION}/ros2-apt-source_${ROS_APT_SOURCE_VERSION}.${VERSION_CODENAME}_all.deb"
-else
-	DOWNLOAD_URL=""
-fi
-
-# Insert the computed actions into CMDS for steps 2 and 3
-if [[ -n "$DOWNLOAD_URL" ]]; then
-	# step index 2 (0-based) is the download step
-	CMDS[2]="curl -L -o /tmp/ros2-apt-source.deb \"$DOWNLOAD_URL\""
-else
-	CMDS[2]="echo \"DOWNLOAD_URL no disponible; revisa la conexión de red o el cálculo de VERSION_CODENAME\""
-fi
 BAR_WIDTH=40
 
 # Colors
@@ -120,7 +96,7 @@ run_step() {
 	fi
 
 	# Run the command in a subshell to avoid polluting environment except where intended
-		if bash -c "$cmd"; then
+		if bash -euo pipefail -c "$cmd"; then
 			printf "%b[OK]%b %s\n" "$GREEN" "$RESET" "$label"
 		return 0
 	else

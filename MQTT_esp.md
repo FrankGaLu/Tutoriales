@@ -100,7 +100,8 @@ El archivo de configuración por defecto está bien documentado y contiene mucho
     ```bash
     allow_anonymous true
     ```
-    Por defecto, se permiten conexiones anónimas. Si deseas requerir autenticación, cambia esto a `false`.
+    Esta opción solo es apropiada para una prueba local y no debe exponerse a Internet.
+    Para un broker compartido, usa `false` y configura autenticación.
 
 4. **Archivo de Contraseñas:**
     ```bash

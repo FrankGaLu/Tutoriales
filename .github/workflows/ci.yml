@@ -62,6 +62,9 @@ jobs:
             print('\nAll Python blocks compiled successfully.')
           PY
 
+      - name: Validate Bash scripts
+        run: bash -n install_mosquitto.sh install_ros2.sh
+
   link-check:
     runs-on: ubuntu-latest
     name: Check links in Markdown

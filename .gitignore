@@ -1,0 +1,18 @@
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+
+# Generated documentation output
+.tmp_md_py/
+graph.png
+
+# ROS 2 build artifacts
+build/
+install/
+log/
+
+# Local editor and operating-system files
+.vscode/
+.DS_Store
+Thumbs.db

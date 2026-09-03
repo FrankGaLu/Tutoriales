@@ -1,26 +1,21 @@
-# Documentation index
+# Índice de documentación
 
-This repository contains several tutorials suitable for students and hobbyists. Use this page as a quick navigation reference.
+Este repositorio reúne tutoriales bilingües, pensados para aprender mediante
+ejemplos pequeños y reproducibles. El [README](../README.md) contiene la ruta
+rápida, los requisitos y las comprobaciones automáticas.
 
-Tutorials included:
+## Guías
 
-- ROS2 (ESP/ENG) — basic publisher/subscriber, URDF, RVIZ2 notes.
-- MQTT (ESP/ENG) — Mosquitto installation, mosquitto_pub/sub usage, Paho Python examples.
-- Bash (ESP/ENG) — terminal basics, safe commands.
-- Graphviz (ESP/ENG) — DOT language examples and rendering.
+- [ROS 2 Jazzy en español](../ROS2_esp.md) | [English](../ROS2_eng.md)
+- [MQTT en español](../MQTT_esp.md) | [English](../MQTT_eng.md)
+- [Bash en español](../bash_esp.md) | [English](../bash_eng.md)
+- [Graphviz en español](../graphviz_tutorial_esp.md) | [English](../graphviz_tutorial_eng.md)
 
-Quick start
+## Recursos
 
-1. Clone the repo:
-
-```bash
-git clone https://github.com/FrankGaLu/Tutoriales.git
-cd Tutoriales
-```
-
-2. Open the tutorial you want (e.g., MQTT_esp.md) in a text editor or viewer.
-3. For Python examples, create and activate a virtualenv and install dependencies (see each tutorial's Installation section).
-
-Contact and contributions
-
-See CONTRIBUTING.md for contribution guidelines and how to run local checks.
+- [Instalador de Mosquitto](../install_mosquitto.sh)
+- [Instalador de ROS 2](../install_ros2.sh)
+- [Ejemplo Graphviz](../graph.dot)
+- [Cómo contribuir](../CONTRIBUTING.md)
+- [Cómo citar](../CITATION.cff)
+- [Licencia MIT](../LICENSE)

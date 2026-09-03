@@ -1,0 +1,16 @@
+cff-version: 1.2.0
+message: "Si utilizas estas guias, cita este repositorio."
+title: "Tutoriales tecnicos"
+authors:
+  - family-names: Garcia-Luna
+    given-names: Francesco
+version: "1.0.0"
+date-released: 2026-09-03
+repository-code: https://github.com/FrankGaLu/Tutoriales
+license: MIT
+keywords:
+  - Bash
+  - Graphviz
+  - MQTT
+  - ROS 2
+  - tutorials
