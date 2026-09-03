@@ -1,7 +1,9 @@
+# Licencia
+
 [![CI](https://github.com/FrankGaLu/Tutoriales/actions/workflows/ci.yml/badge.svg)](https://github.com/FrankGaLu/Tutoriales/actions/workflows/ci.yml)
 [![Licencia: MIT](https://img.shields.io/badge/licencia-MIT-2f855a.svg)](LICENSE)
 
-# Tutoriales técnicos
+## Tutoriales técnicos
 
 Colección bilingüe de guías prácticas para aprender herramientas de robótica,
 mensajería y automatización desde ejemplos pequeños y reproducibles.
@@ -25,35 +27,34 @@ equipo está conectado a una red compartida.
 
 - Los tutoriales de ROS 2 y MQTT están orientados a Ubuntu 24.04 LTS.
 - En Windows, usa WSL 2 con Ubuntu para ejecutar los comandos Bash, ROS 2 y
-	Mosquitto. Graphviz también tiene instalador nativo para Windows.
-- Los instaladores `.sh` modifican el sistema y requieren `sudo`; léelos antes
-	de ejecutarlos y empieza siempre con `--dry-run`.
+Mosquitto. Graphviz también tiene instalador nativo para Windows.
+- Los instaladores `.sh` modifican el sistema y requieren `sudo`; léelos antes de ejecutarlos y empieza siempre con `--dry-run`.
 
 1. Clona el repositorio y entra en él:
 
-	```bash
-	git clone https://github.com/FrankGaLu/Tutoriales.git
-	cd Tutoriales
-	```
+```bash
+git clone https://github.com/FrankGaLu/Tutoriales.git
+cd Tutoriales
+```
 
 2. Elige una guía en la tabla anterior. Las instrucciones están escritas para
-	Ubuntu 24.04 cuando se indica explícitamente.
+Ubuntu 24.04 cuando se indica explícitamente.
+
 3. Para los ejemplos Python, usa Python 3.10 o posterior y un entorno virtual:
 
-	```bash
-	python3 -m venv .venv
-	source .venv/bin/activate
-	python -m pip install --upgrade pip
-	python -m pip install paho-mqtt  # Solo para los ejemplos MQTT
-	```
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+python -m pip install paho-mqtt  # Solo para los ejemplos MQTT
+```
 
-4. Para probar la instalación sin modificar el sistema, ejecuta el modo de
-	simulación de los instaladores:
+4. Para probar la instalación sin modificar el sistema, ejecuta el modo de simulación de los instaladores:
 
-	```bash
-	bash install_mosquitto.sh --dry-run
-	bash install_ros2.sh --dry-run
-	```
+```bash
+bash install_mosquitto.sh --dry-run
+bash install_ros2.sh --dry-run
+```
 
 ### Orden recomendado para una primera práctica
 

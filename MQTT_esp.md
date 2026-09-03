@@ -1,5 +1,6 @@
 # Documentación de MQTT
-**Autor: Dr. Francesco Garcia-Luna**
+
+Autor: Dr. Francesco Garcia-Luna
 
 ---
 
@@ -35,28 +36,32 @@ source .venv/bin/activate
 pip install paho-mqtt
 ```
 
-
 1. **Actualiza la lista de paquetes:**
+
     ```bash
     sudo apt update
     ```
 
 2. **Instala el broker MQTT (Mosquitto):**
+
     ```bash
     sudo apt install mosquitto mosquitto-clients python3-paho-mqtt -y
     ```
 
 3. **Inicia el servicio Mosquitto:**
+
     ```bash
     sudo systemctl start mosquitto
     ```
 
 4. **Habilita Mosquitto para que inicie al arrancar el sistema:**
+
     ```bash
     sudo systemctl enable mosquitto
     ```
 
 5. **Verifica la instalación:**
+
     ```bash
     mosquitto -v
     ```
@@ -86,27 +91,34 @@ El archivo de configuración de Mosquitto se encuentra en `/etc/mosquitto/mosqui
 El archivo de configuración por defecto está bien documentado y contiene muchos ejemplos útiles. Aquí tienes algunos ajustes básicos que puedes modificar:
 
 1. **Puerto:**
+
     ```bash
     port 1883
     ```
+
     El puerto MQTT por defecto es 1883. Si deseas usar otro puerto, puedes cambiarlo aquí.
 
 2. **Listener:**
+
     ```bash
     listener 1883
     ```
 
 3. **Permitir Conexiones Anónimas:**
+
     ```bash
     allow_anonymous true
     ```
+
     Esta opción solo es apropiada para una prueba local y no debe exponerse a Internet.
     Para un broker compartido, usa `false` y configura autenticación.
 
 4. **Archivo de Contraseñas:**
+
     ```bash
     password_file /etc/mosquitto/passwd
     ```
+
     Si deseas requerir autenticación, puedes crear un archivo de contraseñas y especificarlo aquí.
 
 ---
