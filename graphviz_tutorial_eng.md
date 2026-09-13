@@ -42,10 +42,77 @@ dot -Tpng -o graph.png graph.dot
 
 ## 3. Examples
 
+### Orientation
+
+You can set the orientation of the graph using the `rankdir` attribute.
+- `rankdir=LR` sets the graph to be laid out from left to right.
+- `rankdir=TB` sets the graph to be laid out from top to bottom (default).
+
+Example:
+
+```dot
+digraph G {
+    rankdir=LR;
+    A -> B -> C -> D -> A;
+}
+```
+
+### Spline 
+
+You can set the spline type of the edges using the `splines` attribute.
+- `splines=true` enables splines (default).
+- `splines=false` disables splines.
+- `splines=polyline` uses polyline edges.
+- `splines=curved` uses curved edges.
+- `splines=ortho` uses orthogonal edges.
+
+Example:
+
+```dot
+digraph G {
+    rankdir=LR;
+    splines=true;
+    A -> B -> C -> D -> A;
+}
+```
+
+```dot
+digraph G {
+    rankdir=LR;
+    splines=false;
+    A -> B -> C -> D -> A;
+}
+```
+
+```dot
+digraph G {
+    rankdir=LR;
+    splines=polyline;
+    A -> B -> C -> D -> A;
+}
+```
+
+```dot
+digraph G {
+    rankdir=LR;
+    splines=curved;
+    A -> B -> C -> D -> A;
+}
+```
+
+```dot
+digraph G {
+    rankdir=LR;
+    splines=ortho;
+    A -> B -> C -> D -> A;
+}
+```
+
 ### Simple graph
 
 ```dot
 digraph G {
+    rankdir=LR;
     A -> B
     B -> C
     C -> D
@@ -60,6 +127,7 @@ digraph G {
 
 ```dot
 digraph G {
+    rankdir=LR;
     A [label="Node A", shape=box, style=filled, fillcolor=lightblue]
     B [label="Node B", shape=ellipse, style=filled, fillcolor=lightgreen]
     C [label="Node C", shape=diamond, style=filled, fillcolor=lightyellow]
@@ -81,10 +149,30 @@ digraph G {
 - `fillcolor` is the fill color of the node.
     - You can use English color names or RGB codes.
 
+### Graph with hierarchy
+
+- `rank` is used to specify the relative rank of nodes.
+    - `rank=same` places the nodes on the same level.
+    - `rank=min` places the nodes at the minimum rank.
+    - `rank=max` places the nodes at the maximum rank.
+    - `rank=source` places the nodes at the source rank.
+    - `rank=sink` places the nodes at the sink rank.
+```dot
+digraph G {
+    rankdir=LR;
+
+    A -> B -> C -> D;
+
+    { rank=same; A; C; }
+    
+}
+```
+
 ### Graph with subgraphs
 
 ```dot
 digraph G {
+    rankdir=LR;
     subgraph cluster_0 {
         style=filled;
         color=lightgrey;
@@ -112,6 +200,7 @@ digraph G {
 
 ```dot
 digraph G {
+    rankdir=LR;
     A -> B [label="A -> B", color=red, style=dotted]
     B -> C [label="B -> C", color=green, style=dashed]
     C -> D [label="C -> D", color=blue, style=solid]
@@ -128,6 +217,7 @@ digraph G {
     
 ```dot
 digraph G {
+    rankdir=LR;
     graph [label="Graph", labeljust=l, labelloc=t, fontsize=20, fontname="Arial", bgcolor=lightgrey]
     A -> B
     B -> C
@@ -149,6 +239,7 @@ digraph G {
 
 ```dot
 digraph G {
+    rankdir=LR;
     graph [label="Graph", labeljust=l, labelloc=t, fontsize=20, fontname="Arial", bgcolor=lightgrey]
     node [shape=box, style=filled, fillcolor=lightblue]
     edge [color=red, style=dotted]
@@ -166,6 +257,7 @@ digraph G {
 
 ```dot
 digraph G {
+    rankdir=LR;
     graph [label="Graph", labeljust=l, labelloc=t, fontsize=20, fontname="Arial", bgcolor=lightgrey]
     subgraph cluster_0 {
         style=filled;
@@ -200,6 +292,7 @@ Graphs are mathematical structures consisting of nodes (vertices) and edges. Dir
 
 ```dot
 digraph G {
+    rankdir=LR;
     subgraph cluster_A {
         label="Cluster A";
         A1 -> A2;
@@ -222,6 +315,7 @@ This example shows how to group nodes into visually distinct clusters.
 
 ```dot
 digraph G {
+    rankdir=LR;
     A [label=< <B>Node A</B><BR/>Description >];
     B [label=< <I>Node B</I><BR/>Another description >];
     A -> B;
